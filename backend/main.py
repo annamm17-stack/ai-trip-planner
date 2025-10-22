@@ -11,6 +11,10 @@ from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
+# Import pharma-specific modules
+import entity_resolver
+import pharma_tools
+
 # Minimal observability via Arize/OpenInference (optional)
 try:
     from arize.otel import register
@@ -68,6 +72,30 @@ class TripRequest(BaseModel):
 
 class TripResponse(BaseModel):
     result: str
+    tool_calls: List[Dict[str, Any]] = []
+
+
+# ============================================================================
+# PHARMA INTELLIGENCE MODELS
+# ============================================================================
+
+class IntelligenceRequest(BaseModel):
+    entity_id: str
+    entity_name: str
+    entity_type: str  # "manufacturer" or "pbm"
+    date_range: Optional[str] = "30 days"
+    focus_areas: Optional[List[str]] = None  # ["news", "legislative", "products"]
+    
+    # Optional fields for observability
+    session_id: Optional[str] = None
+    user_id: Optional[str] = None
+
+
+class IntelligenceResponse(BaseModel):
+    entity: str
+    summary: str
+    sections: Dict[str, str]  # {"news": "...", "legislative": "...", "products": "..."}
+    citations: List[Dict[str, str]] = []
     tool_calls: List[Dict[str, Any]] = []
 
 
@@ -518,6 +546,21 @@ class TripState(TypedDict):
     tool_calls: Annotated[List[Dict[str, Any]], operator.add]
 
 
+# ============================================================================
+# PHARMA INTELLIGENCE STATE
+# ============================================================================
+
+class PharmaIntelligenceState(TypedDict):
+    messages: Annotated[List[BaseMessage], operator.add]
+    intelligence_request: Dict[str, Any]
+    news: Optional[str]
+    legislative: Optional[str]
+    products: Optional[str]
+    summary: Optional[str]
+    tool_calls: Annotated[List[Dict[str, Any]], operator.add]
+    citations: Annotated[List[Dict[str, str]], operator.add]
+
+
 def research_agent(state: TripState) -> TripState:
     req = state["trip_request"]
     destination = req["destination"]
@@ -779,6 +822,282 @@ def build_graph():
     return g.compile()
 
 
+# ============================================================================
+# PHARMA INTELLIGENCE AGENTS
+# ============================================================================
+
+def news_agent(state: PharmaIntelligenceState) -> PharmaIntelligenceState:
+    """News Agent: Gather market news, announcements, and sentiment."""
+    req = state["intelligence_request"]
+    entity_name = req["entity_name"]
+    entity_type = req["entity_type"]
+    
+    prompt_t = (
+        "You are a pharmaceutical market analyst.\n"
+        "Gather recent market news, company announcements, and sentiment for {entity_name} ({entity_type}).\n"
+        "Use tools to collect information, then synthesize the key developments."
+    )
+    vars_ = {"entity_name": entity_name, "entity_type": entity_type}
+    
+    messages = [SystemMessage(content=prompt_t.format(**vars_))]
+    tools = [pharma_tools.market_news, pharma_tools.company_announcements, pharma_tools.sentiment_analysis]
+    agent = llm.bind_tools(tools)
+    
+    calls: List[Dict[str, Any]] = []
+    
+    # Agent metadata and prompt template instrumentation
+    with using_attributes(tags=["news", "market_intelligence"]):
+        if _TRACING:
+            current_span = trace.get_current_span()
+            if current_span:
+                current_span.set_attribute("metadata.agent_type", "news")
+                current_span.set_attribute("metadata.entity", entity_name)
+        
+        with using_prompt_template(template=prompt_t, variables=vars_, version="v1"):
+            res = agent.invoke(messages)
+    
+    # Collect tool calls and execute them
+    if getattr(res, "tool_calls", None):
+        for c in res.tool_calls:
+            calls.append({"agent": "news", "tool": c["name"], "args": c.get("args", {})})
+        
+        tool_node = ToolNode(tools)
+        tr = tool_node.invoke({"messages": [res]})
+        tool_results = tr["messages"]
+        
+        # Add tool results to conversation and ask LLM to synthesize
+        messages.append(res)
+        messages.extend(tool_results)
+        
+        synthesis_prompt = "Based on the above information, provide a comprehensive summary of recent market news and developments."
+        messages.append(SystemMessage(content=synthesis_prompt))
+        
+        with using_prompt_template(template=synthesis_prompt, variables=vars_, version="v1-synthesis"):
+            final_res = llm.invoke(messages)
+        out = final_res.content
+    else:
+        out = res.content
+    
+    return {"messages": [SystemMessage(content=out)], "news": out, "tool_calls": calls, "citations": []}
+
+
+def legislative_agent(state: PharmaIntelligenceState) -> PharmaIntelligenceState:
+    """Legislative Agent: Track federal and state legislation, regulatory actions."""
+    req = state["intelligence_request"]
+    entity_name = req["entity_name"]
+    entity_type = req["entity_type"]
+    
+    prompt_t = (
+        "You are a pharmaceutical policy analyst.\n"
+        "Identify relevant federal legislation, state bills, and CMS policy updates affecting {entity_name}.\n"
+        "Use tools to gather legislative intelligence, then summarize the key impacts."
+    )
+    vars_ = {"entity_name": entity_name, "entity_type": entity_type}
+    
+    messages = [SystemMessage(content=prompt_t.format(**vars_))]
+    tools = [pharma_tools.federal_legislation, pharma_tools.state_bills, pharma_tools.cms_updates]
+    agent = llm.bind_tools(tools)
+    
+    calls: List[Dict[str, Any]] = []
+    
+    with using_attributes(tags=["legislative", "policy"]):
+        if _TRACING:
+            current_span = trace.get_current_span()
+            if current_span:
+                current_span.set_attribute("metadata.agent_type", "legislative")
+                current_span.set_attribute("metadata.entity", entity_name)
+        
+        with using_prompt_template(template=prompt_t, variables=vars_, version="v1"):
+            res = agent.invoke(messages)
+    
+    if getattr(res, "tool_calls", None):
+        for c in res.tool_calls:
+            calls.append({"agent": "legislative", "tool": c["name"], "args": c.get("args", {})})
+        
+        tool_node = ToolNode(tools)
+        tr = tool_node.invoke({"messages": [res]})
+        
+        messages.append(res)
+        messages.extend(tr["messages"])
+        
+        synthesis_prompt = f"Create a summary of legislative and regulatory impacts on {entity_name}."
+        messages.append(SystemMessage(content=synthesis_prompt))
+        
+        with using_prompt_template(template=synthesis_prompt, variables=vars_, version="v1-synthesis"):
+            final_res = llm.invoke(messages)
+        out = final_res.content
+    else:
+        out = res.content
+    
+    return {"messages": [SystemMessage(content=out)], "legislative": out, "tool_calls": calls, "citations": []}
+
+
+def product_agent(state: PharmaIntelligenceState) -> PharmaIntelligenceState:
+    """Product Agent: Track FDA approvals, clinical trials, and product pipeline."""
+    req = state["intelligence_request"]
+    entity_name = req["entity_name"]
+    entity_type = req["entity_type"]
+    
+    # RAG: Retrieve curated pharma knowledge if enabled
+    context_lines = []
+    if ENABLE_RAG:
+        # Search for relevant pharma knowledge (similar to local agent pattern)
+        try:
+            from pathlib import Path
+            import json
+            
+            data_path = Path(__file__).parent / "data" / "pharma_knowledge.json"
+            if data_path.exists():
+                with open(data_path, 'r') as f:
+                    knowledge_base = json.load(f)
+                
+                # Simple keyword matching for MVP (can enhance with embeddings)
+                relevant_topics = []
+                search_terms = entity_name.lower().split()
+                
+                for item in knowledge_base:
+                    topic_text = (item.get("topic", "") + " " + item.get("description", "")).lower()
+                    if any(term in topic_text for term in search_terms) or entity_type in topic_text:
+                        relevant_topics.append(item)
+                    
+                    if len(relevant_topics) >= 3:
+                        break
+                
+                if relevant_topics:
+                    context_lines.append("=== Relevant Pharma Knowledge ===")
+                    for idx, item in enumerate(relevant_topics, 1):
+                        context_lines.append(f"{idx}. {item['topic']}: {item['description']}")
+                    context_lines.append("=== End of Knowledge Base ===\n")
+        except Exception as e:
+            print(f"RAG retrieval error: {e}")
+    
+    context_text = "\n".join(context_lines) if context_lines else ""
+    
+    prompt_t = (
+        "You are a pharmaceutical R&D analyst.\n"
+        "Track FDA approvals, clinical trials, and product pipeline for {entity_name}.\n"
+        "Use tools to gather product intelligence, then summarize key developments.\n"
+    )
+    
+    if context_text:
+        prompt_t += "\nRelevant regulatory context:\n{context}\n"
+    
+    vars_ = {
+        "entity_name": entity_name,
+        "entity_type": entity_type,
+        "context": context_text if context_text else "No additional context available."
+    }
+    
+    messages = [SystemMessage(content=prompt_t.format(**vars_))]
+    tools = [pharma_tools.fda_approvals, pharma_tools.clinical_trials, pharma_tools.pipeline_status]
+    agent = llm.bind_tools(tools)
+    
+    calls: List[Dict[str, Any]] = []
+    
+    with using_attributes(tags=["products", "pipeline"]):
+        if _TRACING:
+            current_span = trace.get_current_span()
+            if current_span:
+                current_span.set_attribute("metadata.agent_type", "product")
+                current_span.set_attribute("metadata.entity", entity_name)
+                if context_text:
+                    current_span.set_attribute("metadata.rag_enabled", "true")
+        
+        with using_prompt_template(template=prompt_t, variables=vars_, version="v1"):
+            res = agent.invoke(messages)
+    
+    if getattr(res, "tool_calls", None):
+        for c in res.tool_calls:
+            calls.append({"agent": "product", "tool": c["name"], "args": c.get("args", {})})
+        
+        tool_node = ToolNode(tools)
+        tr = tool_node.invoke({"messages": [res]})
+        
+        messages.append(res)
+        messages.extend(tr["messages"])
+        
+        synthesis_prompt = f"Create a summary of product pipeline and FDA activities for {entity_name}."
+        messages.append(SystemMessage(content=synthesis_prompt))
+        
+        with using_prompt_template(template=synthesis_prompt, variables=vars_, version="v1-synthesis"):
+            final_res = llm.invoke(messages)
+        out = final_res.content
+    else:
+        out = res.content
+    
+    return {"messages": [SystemMessage(content=out)], "products": out, "tool_calls": calls, "citations": []}
+
+
+def synthesizer_agent(state: PharmaIntelligenceState) -> PharmaIntelligenceState:
+    """Synthesizer Agent: Create executive summary from all agent inputs."""
+    req = state["intelligence_request"]
+    entity_name = req["entity_name"]
+    entity_type = req["entity_type"]
+    date_range = req.get("date_range", "30 days")
+    
+    prompt_t = (
+        "Create an executive intelligence summary for {entity_name} ({entity_type}).\n"
+        "\n"
+        "Inputs:\n"
+        "Market News: {news}\n"
+        "Legislative Impact: {legislative}\n"
+        "Product Pipeline: {products}\n"
+        "\n"
+        "Structure the summary with clear sections:\n"
+        "1. Executive Overview (2-3 sentences)\n"
+        "2. Key Market Developments\n"
+        "3. Legislative & Regulatory Impacts\n"
+        "4. Product Pipeline Updates\n"
+        "5. Strategic Implications\n"
+        "\n"
+        "Keep it concise but comprehensive for C-suite audience."
+    )
+    
+    vars_ = {
+        "entity_name": entity_name,
+        "entity_type": entity_type,
+        "date_range": date_range,
+        "news": (state.get("news") or "No market news available.")[:500],
+        "legislative": (state.get("legislative") or "No legislative updates available.")[:500],
+        "products": (state.get("products") or "No product updates available.")[:500],
+    }
+    
+    with using_attributes(tags=["synthesizer", "executive_summary"]):
+        if _TRACING:
+            current_span = trace.get_current_span()
+            if current_span:
+                current_span.set_attribute("metadata.agent_type", "synthesizer")
+                current_span.set_attribute("metadata.entity", entity_name)
+        
+        with using_prompt_template(template=prompt_t, variables=vars_, version="v1"):
+            res = llm.invoke([SystemMessage(content=prompt_t.format(**vars_))])
+    
+    return {"messages": [SystemMessage(content=res.content)], "summary": res.content}
+
+
+def build_pharma_graph():
+    """Build the pharmaceutical intelligence agent graph."""
+    g = StateGraph(PharmaIntelligenceState)
+    g.add_node("news_node", news_agent)
+    g.add_node("legislative_node", legislative_agent)
+    g.add_node("product_node", product_agent)
+    g.add_node("synthesizer_node", synthesizer_agent)
+    
+    # Run news, legislative, and product agents in parallel
+    g.add_edge(START, "news_node")
+    g.add_edge(START, "legislative_node")
+    g.add_edge(START, "product_node")
+    
+    # All three agents feed into the synthesizer agent
+    g.add_edge("news_node", "synthesizer_node")
+    g.add_edge("legislative_node", "synthesizer_node")
+    g.add_edge("product_node", "synthesizer_node")
+    
+    g.add_edge("synthesizer_node", END)
+    
+    return g.compile()
+
+
 app = FastAPI(title="AI Trip Planner")
 app.add_middleware(
     CORSMiddleware,
@@ -791,16 +1110,104 @@ app.add_middleware(
 
 @app.get("/")
 def serve_frontend():
+    """Serve the pharma intelligence UI (or fallback to trip planner)."""
     here = os.path.dirname(__file__)
-    path = os.path.join(here, "..", "frontend", "index.html")
-    if os.path.exists(path):
-        return FileResponse(path)
-    return {"message": "frontend/index.html not found"}
+    pharma_path = os.path.join(here, "..", "frontend", "pharma-intelligence.html")
+    legacy_path = os.path.join(here, "..", "frontend", "index.html")
+    
+    # Serve pharma UI if available, otherwise fallback to trip planner
+    if os.path.exists(pharma_path):
+        return FileResponse(pharma_path)
+    elif os.path.exists(legacy_path):
+        return FileResponse(legacy_path)
+    return {"message": "frontend not found"}
 
 
 @app.get("/health")
 def health():
     return {"status": "healthy", "service": "ai-trip-planner"}
+
+
+# ============================================================================
+# PHARMA INTELLIGENCE ENDPOINTS
+# ============================================================================
+
+@app.get("/search-entities")
+def search_entities(q: str, limit: int = 5):
+    """Autocomplete endpoint for pharmaceutical entity search.
+    
+    Args:
+        q: Search query
+        limit: Maximum number of results (default: 5)
+        
+    Returns:
+        JSON with list of matching entities and scores
+    """
+    if not q or len(q.strip()) == 0:
+        return {"results": []}
+    
+    try:
+        resolver = entity_resolver.get_resolver()
+        matches = resolver.fuzzy_search(q.strip(), limit=limit)
+        return {"results": matches}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Entity search error: {str(e)}")
+
+
+@app.post("/generate-intelligence", response_model=IntelligenceResponse)
+def generate_intelligence(req: IntelligenceRequest):
+    """Generate executive intelligence summary for a pharmaceutical entity.
+    
+    This endpoint orchestrates parallel execution of three specialized agents:
+    - News Agent: Market news, announcements, sentiment
+    - Legislative Agent: Federal/state legislation, CMS updates
+    - Product Agent: FDA approvals, clinical trials, pipeline
+    
+    Results are synthesized into an executive summary by the Synthesizer Agent.
+    """
+    graph = build_pharma_graph()
+    
+    state = {
+        "messages": [],
+        "intelligence_request": req.model_dump(),
+        "news": None,
+        "legislative": None,
+        "products": None,
+        "summary": None,
+        "tool_calls": [],
+        "citations": []
+    }
+    
+    # Add session and user tracking attributes to the trace
+    session_id = req.session_id
+    user_id = req.user_id
+    
+    attrs_kwargs = {}
+    if session_id:
+        attrs_kwargs["session_id"] = session_id
+    if user_id:
+        attrs_kwargs["user_id"] = user_id
+    
+    try:
+        if attrs_kwargs:
+            with using_attributes(**attrs_kwargs):
+                out = graph.invoke(state)
+        else:
+            out = graph.invoke(state)
+        
+        return IntelligenceResponse(
+            entity=req.entity_name,
+            summary=out.get("summary", ""),
+            sections={
+                "news": out.get("news", ""),
+                "legislative": out.get("legislative", ""),
+                "products": out.get("products", "")
+            },
+            citations=out.get("citations", []),
+            tool_calls=out.get("tool_calls", [])
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Intelligence generation error: {str(e)}")
 
 
 # Initialize tracing once at startup, not per request

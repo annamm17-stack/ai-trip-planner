@@ -14,7 +14,9 @@ langchain>=0.3.7
 langchain-openai>=0.2.10
 langchain-community>=0.3.5
 litellm
+anthropic>=0.39.0
 python-dotenv>=1.0.0
 requests>=2.31.0
 httpx>=0.24.0
 pandas>=2.0.0
+rapidfuzz>=3.0.0

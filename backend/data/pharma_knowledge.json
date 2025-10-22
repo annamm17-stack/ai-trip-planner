@@ -1,0 +1,143 @@
+[
+  {
+    "topic": "FDA Approval Process",
+    "category": "regulatory",
+    "description": "The FDA drug approval process involves preclinical testing, followed by three phases of clinical trials. Phase I tests safety in 20-80 healthy volunteers. Phase II tests efficacy and side effects in 100-300 patients. Phase III confirms effectiveness in 1,000-3,000 patients. After successful trials, a New Drug Application (NDA) is submitted. FDA review typically takes 6-10 months for standard review, 6 months for priority review. Post-approval Phase IV studies monitor long-term effects.",
+    "source": "FDA.gov",
+    "tags": ["approval", "clinical trials", "regulation", "FDA"]
+  },
+  {
+    "topic": "Drug Supply Chain Security Act (DSCSA)",
+    "category": "regulatory",
+    "description": "DSCSA was enacted in 2013 to build an electronic, interoperable system to identify and trace prescription drugs as they are distributed in the US. Requirements include serialization of products at the package level, creation of transaction history documentation, and verification processes. Full implementation of unit-level traceability was mandated by November 2023. This affects manufacturers, repackagers, wholesale distributors, and dispensers.",
+    "source": "FDA DSCSA Guidance",
+    "tags": ["supply chain", "traceability", "serialization", "compliance"]
+  },
+  {
+    "topic": "340B Drug Pricing Program",
+    "category": "pricing",
+    "description": "The 340B Program requires drug manufacturers to provide outpatient drugs to eligible healthcare organizations and covered entities at significantly reduced prices. Covered entities include federally qualified health centers, Ryan White clinics, and hospitals serving high proportions of low-income patients. Manufacturers participate in exchange for Medicaid coverage of their drugs. The program has grown significantly, with sales exceeding $50 billion annually. Recent disputes have emerged between manufacturers and PBMs over contract pharmacies.",
+    "source": "HRSA 340B Program",
+    "tags": ["340B", "pricing", "healthcare", "Medicaid"]
+  },
+  {
+    "topic": "PBM Rebate Structure",
+    "category": "pbm",
+    "description": "Pharmacy Benefit Managers negotiate rebates from drug manufacturers in exchange for favorable formulary placement. Rebates typically range from 20-60% of list price for brand drugs. PBMs may retain a portion of rebates (spread pricing) or pass through rebates to plan sponsors. The rebate system has been criticized for incentivizing higher list prices and creating opacity in drug pricing. Legislative proposals have sought to eliminate or reform the rebate system in Medicare Part D.",
+    "source": "Industry Analysis",
+    "tags": ["PBM", "rebates", "formulary", "pricing"]
+  },
+  {
+    "topic": "Medicare Part D",
+    "category": "coverage",
+    "description": "Medicare Part D provides prescription drug coverage to Medicare beneficiaries through private plans. The program includes a coverage gap (donut hole) where beneficiaries pay a higher percentage of costs, though the Inflation Reduction Act is phasing this out. Part D plans must cover at least two drugs in each therapeutic category. The program has complex payment structures including direct subsidies, reinsurance, and risk corridors. Annual enrollment exceeds 49 million beneficiaries.",
+    "source": "CMS Medicare Part D",
+    "tags": ["Medicare", "Part D", "coverage", "seniors"]
+  },
+  {
+    "topic": "Biosimilars and Interchangeability",
+    "category": "products",
+    "description": "Biosimilars are highly similar versions of approved biologic products with no clinically meaningful differences. The FDA evaluates biosimilars through a streamlined pathway established by the Biologics Price Competition and Innovation Act (BPCIA). Interchangeable biosimilars can be substituted for the reference product without prescriber intervention, similar to generic drugs. As of 2024, dozens of biosimilars have been approved, offering potential cost savings of 15-35% compared to reference biologics.",
+    "source": "FDA Biosimilars",
+    "tags": ["biosimilars", "biologics", "interchangeability", "generics"]
+  },
+  {
+    "topic": "Orphan Drug Act",
+    "category": "regulatory",
+    "description": "The Orphan Drug Act of 1983 provides incentives for developing drugs to treat rare diseases affecting fewer than 200,000 Americans. Incentives include tax credits for clinical trial costs, waiver of FDA application fees, and seven years of market exclusivity. The program has been highly successful, with over 1,000 orphan drug designations granted and hundreds of approvals. Critics note that some drugs receive orphan designation for rare indications despite broad use.",
+    "source": "FDA Orphan Drug Program",
+    "tags": ["orphan drugs", "rare disease", "incentives", "exclusivity"]
+  },
+  {
+    "topic": "Accelerated Approval Pathway",
+    "category": "regulatory",
+    "description": "FDA's accelerated approval pathway allows earlier approval of drugs for serious conditions based on surrogate endpoints or intermediate clinical endpoints. Sponsors must conduct post-approval confirmatory trials to verify clinical benefit. If confirmatory trials fail, FDA can withdraw approval through expedited procedures. The pathway has been used for oncology, HIV, and other life-threatening diseases. Recent reforms require more rigorous enforcement of post-approval study requirements.",
+    "source": "FDA Guidance",
+    "tags": ["accelerated approval", "FDA", "clinical trials", "endpoints"]
+  },
+  {
+    "topic": "Drug Compounding Regulations",
+    "category": "regulatory",
+    "description": "Drug compounding involves combining, mixing, or altering ingredients to create medications tailored to individual patients. Traditional compounding by pharmacies is regulated under state law. The Drug Quality and Security Act (2013) created a new category of outsourcing facilities that must register with FDA and meet current good manufacturing practices. This followed the 2012 meningitis outbreak linked to contaminated compounded drugs. FDA distinguishes between compounding and manufacturing based on scale and marketing.",
+    "source": "FDA DQSA",
+    "tags": ["compounding", "pharmacy", "manufacturing", "quality"]
+  },
+  {
+    "topic": "REMS Programs",
+    "category": "safety",
+    "description": "Risk Evaluation and Mitigation Strategies (REMS) are required by FDA for certain medications with serious safety concerns. REMS may include medication guides, communication plans, elements to assure safe use (ETASU), and implementation systems. Common REMS requirements include prescriber certification, pharmacy certification, patient enrollment, and monitoring. Drugs with REMS include isotretinoin (iPLEDGE), clozapine, and opioid analgesics. REMS can create access barriers but are intended to allow beneficial drugs to remain available.",
+    "source": "FDA REMS",
+    "tags": ["REMS", "drug safety", "risk management", "prescribing"]
+  },
+  {
+    "topic": "Inflation Reduction Act Drug Provisions",
+    "category": "legislation",
+    "description": "The Inflation Reduction Act (2022) includes major Medicare drug pricing reforms. Key provisions: Medicare can negotiate prices for high-cost drugs (starting with 10 drugs in 2026), manufacturers pay rebates if prices increase faster than inflation, out-of-pocket costs capped at $2,000 annually (2025), insulin copays capped at $35/month. The law also extends enhanced ACA subsidies. CBO estimates $237 billion in savings over 10 years. Pharmaceutical industry has challenged the negotiation provisions in court.",
+    "source": "Congressional Research Service",
+    "tags": ["IRA", "Medicare", "drug pricing", "negotiation", "legislation"]
+  },
+  {
+    "topic": "Hatch-Waxman Act",
+    "category": "legislation",
+    "description": "The Drug Price Competition and Patent Term Restoration Act (1984), known as Hatch-Waxman, created the modern generic drug approval process. It allows generic manufacturers to file Abbreviated New Drug Applications (ANDAs) showing bioequivalence rather than repeating clinical trials. The law also provides patent term extensions to innovator drugs and 180-day exclusivity for first-to-file generic challengers. Orange Book lists approved drugs and relevant patents. The framework balances innovation incentives with generic competition.",
+    "source": "FDA Orange Book",
+    "tags": ["Hatch-Waxman", "generics", "patents", "ANDA", "exclusivity"]
+  },
+  {
+    "topic": "Controlled Substances Scheduling",
+    "category": "regulatory",
+    "description": "The DEA schedules controlled substances into five categories based on abuse potential and medical use. Schedule I drugs (heroin, LSD) have no accepted medical use. Schedule II (oxycodone, fentanyl) have high abuse potential with severe dependence risk. Schedule III-V have decreasing abuse potential. Scheduling affects prescribing requirements, manufacturing quotas, and distribution controls. The opioid epidemic has intensified scrutiny of Schedule II opioid prescribing and led to stricter REMS requirements.",
+    "source": "DEA Scheduling",
+    "tags": ["DEA", "controlled substances", "opioids", "scheduling"]
+  },
+  {
+    "topic": "Pediatric Drug Development",
+    "category": "regulatory",
+    "description": "The Pediatric Research Equity Act (PREA) requires sponsors to study drugs in pediatric populations if the drug is intended for a condition affecting children. The Best Pharmaceuticals for Children Act (BPCA) provides six months of additional exclusivity for voluntary pediatric studies. Many drugs lack adequate pediatric labeling, requiring off-label use. FDA can require pediatric studies via written requests. Recent initiatives focus on age-appropriate formulations and pragmatic trial designs.",
+    "source": "FDA Pediatric Programs",
+    "tags": ["pediatrics", "children", "PREA", "BPCA", "exclusivity"]
+  },
+  {
+    "topic": "Pharmacovigilance and FAERS",
+    "category": "safety",
+    "description": "The FDA Adverse Event Reporting System (FAERS) collects reports of adverse events and medication errors involving drugs and biologics. Manufacturers must submit serious adverse event reports within 15 days. Healthcare providers and consumers can voluntarily report through MedWatch. FDA analyzes FAERS data to detect safety signals. Limitations include underreporting, duplicate reports, and lack of denominator data. Major safety signals have led to label changes, REMS requirements, or market withdrawals.",
+    "source": "FDA FAERS",
+    "tags": ["adverse events", "pharmacovigilance", "FAERS", "safety signals"]
+  },
+  {
+    "topic": "Gene Therapy Regulation",
+    "category": "products",
+    "description": "Gene therapies involve introducing genetic material to treat or prevent disease. FDA regulates gene therapies as biologics under CBER. Key considerations include manufacturing consistency, vector characterization, biodistribution, and long-term follow-up. One-time therapies raise unique pricing and reimbursement challenges, with costs exceeding $1-2 million. FDA has approved gene therapies for inherited retinal disease, SMA, hemophilia, and sickle cell disease. The field is rapidly evolving with CRISPR and base editing technologies.",
+    "source": "FDA CBER",
+    "tags": ["gene therapy", "biologics", "CRISPR", "rare disease"]
+  },
+  {
+    "topic": "Drug Importation Policies",
+    "category": "policy",
+    "description": "Federal law generally prohibits importation of prescription drugs by individuals and commercial entities. Section 804 of FDCA allows importation from Canada under specific conditions, but implementation has been limited. Some states have passed importation programs awaiting FDA approval. Safety concerns include counterfeit drugs, different formulations, and lack of FDA oversight. Proponents cite price differentials as high as 50-80% for identical drugs. Recent FDA guidance outlines pathways for state and industry importation programs.",
+    "source": "FDA Import Policy",
+    "tags": ["importation", "drug pricing", "Canada", "safety"]
+  },
+  {
+    "topic": "Cell and Tissue Products",
+    "category": "regulatory",
+    "description": "FDA regulates human cells, tissues, and cellular and tissue-based products (HCT/Ps) under 21 CFR Part 1271. Products meeting criteria for minimal manipulation and homologous use may qualify for Section 361 regulation (less stringent). Products requiring premarket approval are regulated as biologics under Section 351. Recent enforcement has targeted stem cell clinics making unapproved claims. Tissue establishments must register with FDA and follow good tissue practices. The field includes wound care products, reproductive tissues, and structural tissues.",
+    "source": "FDA Tissue Guidance",
+    "tags": ["cell therapy", "tissue", "HCT/P", "stem cells", "biologics"]
+  },
+  {
+    "topic": "Prescription Drug Marketing Act",
+    "category": "regulatory",
+    "description": "The Prescription Drug Marketing Act (1987) regulates distribution and sale of prescription drugs to prevent counterfeit, adulterated, or mislabeled products. Key provisions prohibit reimportation by anyone except the manufacturer, ban sale of drug samples, require pedigrees for wholesale distribution, and regulate drug diversion. Wholesale distributors must be state-licensed and follow good distribution practices. The law addresses concerns about the gray market and parallel importation.",
+    "source": "FDA PDMA Guidance",
+    "tags": ["distribution", "wholesale", "diversion", "counterfeits"]
+  },
+  {
+    "topic": "Specialty Pharmacy",
+    "category": "distribution",
+    "description": "Specialty pharmacies dispense high-cost, complex medications requiring special handling, administration, or monitoring. Common therapeutic areas include oncology, rheumatology, multiple sclerosis, HIV, and hemophilia. Specialty drugs represent 2-3% of prescriptions but over 50% of drug spending. Specialty pharmacies often provide patient support services, reimbursement assistance, and adherence programs. Integration between PBMs, manufacturers, and specialty pharmacies raises concerns about steering patients and limiting choice.",
+    "source": "Industry Analysis",
+    "tags": ["specialty pharmacy", "specialty drugs", "high-cost", "patient services"]
+  }
+]
+

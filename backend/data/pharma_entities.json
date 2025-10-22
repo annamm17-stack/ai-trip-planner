@@ -1,0 +1,557 @@
+{
+  "manufacturers": [
+    {
+      "id": "pfizer",
+      "name": "Pfizer Inc.",
+      "aliases": ["Pfizer", "PFE", "Pfizer Pharmaceuticals"],
+      "ticker": "PFE",
+      "type": "manufacturer",
+      "headquarters": "New York, NY",
+      "website": "pfizer.com"
+    },
+    {
+      "id": "johnson-johnson",
+      "name": "Johnson & Johnson",
+      "aliases": ["J&J", "JNJ", "Janssen Pharmaceuticals", "Janssen"],
+      "ticker": "JNJ",
+      "type": "manufacturer",
+      "headquarters": "New Brunswick, NJ",
+      "website": "jnj.com"
+    },
+    {
+      "id": "eli-lilly",
+      "name": "Eli Lilly and Company",
+      "aliases": ["Lilly", "Eli Lilly", "LLY"],
+      "ticker": "LLY",
+      "type": "manufacturer",
+      "headquarters": "Indianapolis, IN",
+      "website": "lilly.com"
+    },
+    {
+      "id": "abbvie",
+      "name": "AbbVie Inc.",
+      "aliases": ["AbbVie", "ABBV"],
+      "ticker": "ABBV",
+      "type": "manufacturer",
+      "headquarters": "North Chicago, IL",
+      "website": "abbvie.com"
+    },
+    {
+      "id": "novartis",
+      "name": "Novartis AG",
+      "aliases": ["Novartis", "NVS"],
+      "ticker": "NVS",
+      "type": "manufacturer",
+      "headquarters": "Basel, Switzerland",
+      "website": "novartis.com"
+    },
+    {
+      "id": "merck",
+      "name": "Merck & Co.",
+      "aliases": ["Merck", "MRK", "Merck Sharp & Dohme", "MSD"],
+      "ticker": "MRK",
+      "type": "manufacturer",
+      "headquarters": "Rahway, NJ",
+      "website": "merck.com"
+    },
+    {
+      "id": "roche",
+      "name": "Roche Holding AG",
+      "aliases": ["Roche", "RHHBY", "Genentech"],
+      "ticker": "RHHBY",
+      "type": "manufacturer",
+      "headquarters": "Basel, Switzerland",
+      "website": "roche.com"
+    },
+    {
+      "id": "astrazeneca",
+      "name": "AstraZeneca PLC",
+      "aliases": ["AstraZeneca", "AZN"],
+      "ticker": "AZN",
+      "type": "manufacturer",
+      "headquarters": "Cambridge, UK",
+      "website": "astrazeneca.com"
+    },
+    {
+      "id": "bristol-myers-squibb",
+      "name": "Bristol Myers Squibb",
+      "aliases": ["BMS", "BMY", "Bristol-Myers"],
+      "ticker": "BMY",
+      "type": "manufacturer",
+      "headquarters": "New York, NY",
+      "website": "bms.com"
+    },
+    {
+      "id": "novo-nordisk",
+      "name": "Novo Nordisk A/S",
+      "aliases": ["Novo Nordisk", "NVO"],
+      "ticker": "NVO",
+      "type": "manufacturer",
+      "headquarters": "Bagsværd, Denmark",
+      "website": "novonordisk.com"
+    },
+    {
+      "id": "sanofi",
+      "name": "Sanofi S.A.",
+      "aliases": ["Sanofi", "SNY"],
+      "ticker": "SNY",
+      "type": "manufacturer",
+      "headquarters": "Paris, France",
+      "website": "sanofi.com"
+    },
+    {
+      "id": "gsk",
+      "name": "GSK plc",
+      "aliases": ["GlaxoSmithKline", "GSK", "Glaxo"],
+      "ticker": "GSK",
+      "type": "manufacturer",
+      "headquarters": "London, UK",
+      "website": "gsk.com"
+    },
+    {
+      "id": "gilead",
+      "name": "Gilead Sciences Inc.",
+      "aliases": ["Gilead", "GILD"],
+      "ticker": "GILD",
+      "type": "manufacturer",
+      "headquarters": "Foster City, CA",
+      "website": "gilead.com"
+    },
+    {
+      "id": "amgen",
+      "name": "Amgen Inc.",
+      "aliases": ["Amgen", "AMGN"],
+      "ticker": "AMGN",
+      "type": "manufacturer",
+      "headquarters": "Thousand Oaks, CA",
+      "website": "amgen.com"
+    },
+    {
+      "id": "biogen",
+      "name": "Biogen Inc.",
+      "aliases": ["Biogen", "BIIB"],
+      "ticker": "BIIB",
+      "type": "manufacturer",
+      "headquarters": "Cambridge, MA",
+      "website": "biogen.com"
+    },
+    {
+      "id": "bayer",
+      "name": "Bayer AG",
+      "aliases": ["Bayer", "BAYRY"],
+      "ticker": "BAYRY",
+      "type": "manufacturer",
+      "headquarters": "Leverkusen, Germany",
+      "website": "bayer.com"
+    },
+    {
+      "id": "takeda",
+      "name": "Takeda Pharmaceutical Company",
+      "aliases": ["Takeda", "TAK"],
+      "ticker": "TAK",
+      "type": "manufacturer",
+      "headquarters": "Tokyo, Japan",
+      "website": "takeda.com"
+    },
+    {
+      "id": "boehringer-ingelheim",
+      "name": "Boehringer Ingelheim",
+      "aliases": ["Boehringer", "BI"],
+      "ticker": null,
+      "type": "manufacturer",
+      "headquarters": "Ingelheim, Germany",
+      "website": "boehringer-ingelheim.com"
+    },
+    {
+      "id": "moderna",
+      "name": "Moderna Inc.",
+      "aliases": ["Moderna", "MRNA"],
+      "ticker": "MRNA",
+      "type": "manufacturer",
+      "headquarters": "Cambridge, MA",
+      "website": "modernatx.com"
+    },
+    {
+      "id": "regeneron",
+      "name": "Regeneron Pharmaceuticals",
+      "aliases": ["Regeneron", "REGN"],
+      "ticker": "REGN",
+      "type": "manufacturer",
+      "headquarters": "Tarrytown, NY",
+      "website": "regeneron.com"
+    },
+    {
+      "id": "vertex",
+      "name": "Vertex Pharmaceuticals",
+      "aliases": ["Vertex", "VRTX"],
+      "ticker": "VRTX",
+      "type": "manufacturer",
+      "headquarters": "Boston, MA",
+      "website": "vrtx.com"
+    },
+    {
+      "id": "alexion",
+      "name": "Alexion Pharmaceuticals",
+      "aliases": ["Alexion", "ALXN"],
+      "ticker": "ALXN",
+      "type": "manufacturer",
+      "headquarters": "Boston, MA",
+      "website": "alexion.com"
+    },
+    {
+      "id": "incyte",
+      "name": "Incyte Corporation",
+      "aliases": ["Incyte", "INCY"],
+      "ticker": "INCY",
+      "type": "manufacturer",
+      "headquarters": "Wilmington, DE",
+      "website": "incyte.com"
+    },
+    {
+      "id": "teva",
+      "name": "Teva Pharmaceutical Industries",
+      "aliases": ["Teva", "TEVA"],
+      "ticker": "TEVA",
+      "type": "manufacturer",
+      "headquarters": "Petah Tikva, Israel",
+      "website": "tevapharm.com"
+    },
+    {
+      "id": "allergan",
+      "name": "Allergan plc",
+      "aliases": ["Allergan", "AGN", "Abbvie Allergan"],
+      "ticker": null,
+      "type": "manufacturer",
+      "headquarters": "Dublin, Ireland",
+      "website": "allergan.com"
+    },
+    {
+      "id": "astellas",
+      "name": "Astellas Pharma Inc.",
+      "aliases": ["Astellas", "ALPMY"],
+      "ticker": "ALPMY",
+      "type": "manufacturer",
+      "headquarters": "Tokyo, Japan",
+      "website": "astellas.com"
+    },
+    {
+      "id": "daiichi-sankyo",
+      "name": "Daiichi Sankyo Company",
+      "aliases": ["Daiichi Sankyo", "DSNKY"],
+      "ticker": "DSNKY",
+      "type": "manufacturer",
+      "headquarters": "Tokyo, Japan",
+      "website": "daiichisankyo.com"
+    },
+    {
+      "id": "eisai",
+      "name": "Eisai Co., Ltd.",
+      "aliases": ["Eisai", "ESALY"],
+      "ticker": "ESALY",
+      "type": "manufacturer",
+      "headquarters": "Tokyo, Japan",
+      "website": "eisai.com"
+    },
+    {
+      "id": "celgene",
+      "name": "Celgene Corporation",
+      "aliases": ["Celgene", "CELG", "BMS Celgene"],
+      "ticker": null,
+      "type": "manufacturer",
+      "headquarters": "Summit, NJ",
+      "website": "celgene.com"
+    },
+    {
+      "id": "ucb",
+      "name": "UCB S.A.",
+      "aliases": ["UCB", "UCBJY"],
+      "ticker": "UCBJY",
+      "type": "manufacturer",
+      "headquarters": "Brussels, Belgium",
+      "website": "ucb.com"
+    },
+    {
+      "id": "CSL",
+      "name": "CSL Limited",
+      "aliases": ["CSL", "CSLLY", "CSL Behring"],
+      "ticker": "CSLLY",
+      "type": "manufacturer",
+      "headquarters": "Melbourne, Australia",
+      "website": "csl.com"
+    },
+    {
+      "id": "seagen",
+      "name": "Seagen Inc.",
+      "aliases": ["Seagen", "SGEN", "Seattle Genetics"],
+      "ticker": "SGEN",
+      "type": "manufacturer",
+      "headquarters": "Bothell, WA",
+      "website": "seagen.com"
+    },
+    {
+      "id": "biomarin",
+      "name": "BioMarin Pharmaceutical",
+      "aliases": ["BioMarin", "BMRN"],
+      "ticker": "BMRN",
+      "type": "manufacturer",
+      "headquarters": "San Rafael, CA",
+      "website": "biomarin.com"
+    },
+    {
+      "id": "jazz",
+      "name": "Jazz Pharmaceuticals",
+      "aliases": ["Jazz", "JAZZ"],
+      "ticker": "JAZZ",
+      "type": "manufacturer",
+      "headquarters": "Dublin, Ireland",
+      "website": "jazzpharma.com"
+    },
+    {
+      "id": "alkermes",
+      "name": "Alkermes plc",
+      "aliases": ["Alkermes", "ALKS"],
+      "ticker": "ALKS",
+      "type": "manufacturer",
+      "headquarters": "Dublin, Ireland",
+      "website": "alkermes.com"
+    },
+    {
+      "id": "horizon",
+      "name": "Horizon Therapeutics",
+      "aliases": ["Horizon", "HZNP"],
+      "ticker": "HZNP",
+      "type": "manufacturer",
+      "headquarters": "Deerfield, IL",
+      "website": "horizontherapeutics.com"
+    },
+    {
+      "id": "biontech",
+      "name": "BioNTech SE",
+      "aliases": ["BioNTech", "BNTX"],
+      "ticker": "BNTX",
+      "type": "manufacturer",
+      "headquarters": "Mainz, Germany",
+      "website": "biontech.de"
+    },
+    {
+      "id": "illumina",
+      "name": "Illumina Inc.",
+      "aliases": ["Illumina", "ILMN"],
+      "ticker": "ILMN",
+      "type": "manufacturer",
+      "headquarters": "San Diego, CA",
+      "website": "illumina.com"
+    },
+    {
+      "id": "exact-sciences",
+      "name": "Exact Sciences Corporation",
+      "aliases": ["Exact Sciences", "EXAS"],
+      "ticker": "EXAS",
+      "type": "manufacturer",
+      "headquarters": "Madison, WI",
+      "website": "exactsciences.com"
+    },
+    {
+      "id": "catalent",
+      "name": "Catalent Inc.",
+      "aliases": ["Catalent", "CTLT"],
+      "ticker": "CTLT",
+      "type": "manufacturer",
+      "headquarters": "Somerset, NJ",
+      "website": "catalent.com"
+    },
+    {
+      "id": "iqvia",
+      "name": "IQVIA Holdings Inc.",
+      "aliases": ["IQVIA", "IQV", "Quintiles IMS"],
+      "ticker": "IQV",
+      "type": "manufacturer",
+      "headquarters": "Durham, NC",
+      "website": "iqvia.com"
+    },
+    {
+      "id": "illumina",
+      "name": "Emergent BioSolutions",
+      "aliases": ["Emergent", "EBS"],
+      "ticker": "EBS",
+      "type": "manufacturer",
+      "headquarters": "Gaithersburg, MD",
+      "website": "emergentbiosolutions.com"
+    },
+    {
+      "id": "mylan",
+      "name": "Mylan N.V.",
+      "aliases": ["Mylan", "MYL", "Viatris"],
+      "ticker": "MYL",
+      "type": "manufacturer",
+      "headquarters": "Canonsburg, PA",
+      "website": "mylan.com"
+    },
+    {
+      "id": "endo",
+      "name": "Endo International plc",
+      "aliases": ["Endo", "ENDP"],
+      "ticker": "ENDP",
+      "type": "manufacturer",
+      "headquarters": "Dublin, Ireland",
+      "website": "endo.com"
+    },
+    {
+      "id": "mallinckrodt",
+      "name": "Mallinckrodt Pharmaceuticals",
+      "aliases": ["Mallinckrodt", "MNK"],
+      "ticker": "MNK",
+      "type": "manufacturer",
+      "headquarters": "Staines-upon-Thames, UK",
+      "website": "mallinckrodt.com"
+    },
+    {
+      "id": "perrigo",
+      "name": "Perrigo Company",
+      "aliases": ["Perrigo", "PRGO"],
+      "ticker": "PRGO",
+      "type": "manufacturer",
+      "headquarters": "Dublin, Ireland",
+      "website": "perrigo.com"
+    },
+    {
+      "id": "zoetis",
+      "name": "Zoetis Inc.",
+      "aliases": ["Zoetis", "ZTS"],
+      "ticker": "ZTS",
+      "type": "manufacturer",
+      "headquarters": "Parsippany, NJ",
+      "website": "zoetis.com"
+    },
+    {
+      "id": "viatris",
+      "name": "Viatris Inc.",
+      "aliases": ["Viatris", "VTRS", "Mylan Upjohn"],
+      "ticker": "VTRS",
+      "type": "manufacturer",
+      "headquarters": "Canonsburg, PA",
+      "website": "viatris.com"
+    },
+    {
+      "id": "organon",
+      "name": "Organon & Co.",
+      "aliases": ["Organon", "OGN"],
+      "ticker": "OGN",
+      "type": "manufacturer",
+      "headquarters": "Jersey City, NJ",
+      "website": "organon.com"
+    },
+    {
+      "id": "bausch-health",
+      "name": "Bausch Health Companies",
+      "aliases": ["Bausch Health", "BHC", "Valeant"],
+      "ticker": "BHC",
+      "type": "manufacturer",
+      "headquarters": "Laval, Quebec",
+      "website": "bauschhealth.com"
+    }
+  ],
+  "pbms": [
+    {
+      "id": "cvs-caremark",
+      "name": "CVS Caremark",
+      "aliases": ["CVS", "Caremark", "CVS Health PBM", "CVS Health"],
+      "parent": "CVS Health",
+      "ticker": "CVS",
+      "type": "pbm",
+      "headquarters": "Woonsocket, RI",
+      "website": "cvshealth.com"
+    },
+    {
+      "id": "express-scripts",
+      "name": "Express Scripts",
+      "aliases": ["Express Scripts", "ESI", "Cigna Express Scripts", "Evernorth"],
+      "parent": "Cigna",
+      "ticker": "CI",
+      "type": "pbm",
+      "headquarters": "St. Louis, MO",
+      "website": "express-scripts.com"
+    },
+    {
+      "id": "optumrx",
+      "name": "OptumRx",
+      "aliases": ["OptumRx", "Optum", "UnitedHealth Optum"],
+      "parent": "UnitedHealth Group",
+      "ticker": "UNH",
+      "type": "pbm",
+      "headquarters": "Minnetonka, MN",
+      "website": "optum.com"
+    },
+    {
+      "id": "humana-pharmacy",
+      "name": "Humana Pharmacy Solutions",
+      "aliases": ["Humana Pharmacy", "Humana PBM", "Humana"],
+      "parent": "Humana Inc.",
+      "ticker": "HUM",
+      "type": "pbm",
+      "headquarters": "Louisville, KY",
+      "website": "humana.com"
+    },
+    {
+      "id": "prime-therapeutics",
+      "name": "Prime Therapeutics",
+      "aliases": ["Prime", "Prime Therapeutics LLC"],
+      "parent": "Blue Cross Blue Shield",
+      "ticker": null,
+      "type": "pbm",
+      "headquarters": "Eagan, MN",
+      "website": "primetherapeutics.com"
+    },
+    {
+      "id": "magellan-rx",
+      "name": "Magellan Rx Management",
+      "aliases": ["Magellan Rx", "Magellan Health", "MRx"],
+      "parent": "Magellan Health",
+      "ticker": null,
+      "type": "pbm",
+      "headquarters": "Scottsdale, AZ",
+      "website": "magellanrx.com"
+    },
+    {
+      "id": "medimpact",
+      "name": "MedImpact Healthcare Systems",
+      "aliases": ["MedImpact", "Med Impact"],
+      "parent": null,
+      "ticker": null,
+      "type": "pbm",
+      "headquarters": "San Diego, CA",
+      "website": "medimpact.com"
+    },
+    {
+      "id": "navitus",
+      "name": "Navitus Health Solutions",
+      "aliases": ["Navitus", "Navitus Health"],
+      "parent": null,
+      "ticker": null,
+      "type": "pbm",
+      "headquarters": "Madison, WI",
+      "website": "navitus.com"
+    },
+    {
+      "id": "elixir",
+      "name": "Elixir Solutions",
+      "aliases": ["Elixir", "Elixir PBM"],
+      "parent": "Rite Aid",
+      "ticker": null,
+      "type": "pbm",
+      "headquarters": "King of Prussia, PA",
+      "website": "elixirsolutions.com"
+    },
+    {
+      "id": "envolverx",
+      "name": "EnvolveRx",
+      "aliases": ["Envolve", "EnvolveRx", "Centene PBM"],
+      "parent": "Centene Corporation",
+      "ticker": "CNC",
+      "type": "pbm",
+      "headquarters": "St. Louis, MO",
+      "website": "envolverx.com"
+    }
+  ]
+}
+

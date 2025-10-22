@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaPulse Intelligence Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --light-blue: #dbeafe;
+            --dark-gray: #1f2937;
+            --medium-gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark-gray);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--white);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Search Card */
+        .search-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        .search-section {
+            position: relative;
+        }
+
+        .search-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--medium-gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.125rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--medium-gray);
+            pointer-events: none;
+        }
+
+        /* Autocomplete */
+        .autocomplete-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-top: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
+        }
+
+        .autocomplete-results.show {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 16px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.2s;
+        }
+
+        .autocomplete-item:hover {
+            background: var(--light-blue);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .entity-name {
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 4px;
+        }
+
+        .entity-meta {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+        }
+
+        .entity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .entity-badge.manufacturer {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .entity-badge.pbm {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: var(--medium-gray);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--secondary-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--medium-gray);
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .loading-progress {
+            margin-top: 20px;
+        }
+
+        .progress-item {
+            padding: 8px 0;
+            color: var(--medium-gray);
+            font-size: 0.875rem;
+        }
+
+        .progress-item.completed {
+            color: var(--success-green);
+        }
+
+        .progress-item.active {
+            color: var(--secondary-blue);
+            font-weight: 600;
+        }
+
+        /* Report Card */
+        .report-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .report-card.show {
+            display: block;
+        }
+
+        .report-header {
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .report-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .report-title h2 {
+            font-size: 1.875rem;
+            color: var(--dark-gray);
+        }
+
+        .new-search-btn {
+            padding: 10px 20px;
+            background: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .new-search-btn:hover {
+            background: var(--primary-blue);
+        }
+
+        .report-meta {
+            color: var(--medium-gray);
+            font-size: 0.875rem;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .summary-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--medium-gray);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--secondary-blue);
+        }
+
+        .tab.active {
+            color: var(--secondary-blue);
+            border-bottom-color: var(--secondary-blue);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .tab-panel {
+            background: var(--light-gray);
+            padding: 30px;
+            border-radius: 12px;
+            line-height: 1.8;
+            color: var(--dark-gray);
+        }
+
+        .tab-panel h4 {
+            color: var(--primary-blue);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+
+        .tab-panel p {
+            margin-bottom: 15px;
+        }
+
+        /* Tool Calls Section */
+        .tool-calls-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 12px;
+        }
+
+        .tool-calls-section h4 {
+            font-size: 1rem;
+            color: var(--medium-gray);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tool-call {
+            background: var(--white);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-call-agent {
+            font-weight: 600;
+            color: var(--secondary-blue);
+        }
+
+        .tool-call-tool {
+            color: var(--medium-gray);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--white);
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: #fee2e2;
+            border-left: 4px solid var(--error-red);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .error-message strong {
+            color: var(--error-red);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.875rem;
+            }
+
+            .search-card,
+            .report-card {
+                padding: 20px;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab {
+                white-space: nowrap;
+            }
+
+            .report-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💊 PharmaPulse Intelligence</h1>
+            <p>Real-time intelligence on pharmaceutical manufacturers and PBMs</p>
+        </div>
+
+        <!-- Search Card -->
+        <div class="search-card">
+            <div class="search-section">
+                <label class="search-label">Search Pharmaceutical Entity</label>
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search for manufacturers or PBMs (e.g., Pfizer, CVS Caremark)..."
+                        autocomplete="off"
+                    >
+                    <span class="search-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </span>
+                </div>
+                <div id="autocompleteResults" class="autocomplete-results"></div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingSpinner" class="loading-spinner">
+            <div class="search-card">
+                <div class="spinner"></div>
+                <div class="loading-text">Generating Intelligence Report...</div>
+                <div class="loading-progress" id="loadingProgress">
+                    <div class="progress-item">⏳ Initializing agents...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Card -->
+        <div id="reportCard" class="report-card">
+            <div class="report-header">
+                <div class="report-title">
+                    <h2 id="reportEntityName"></h2>
+                    <button class="new-search-btn" onclick="resetSearch()">New Search</button>
+                </div>
+                <div class="report-meta" id="reportMeta"></div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="summary-section" id="summarySection"></div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('news')">📰 Market News</button>
+                <button class="tab" onclick="switchTab('legislative')">⚖️ Legislative Impact</button>
+                <button class="tab" onclick="switchTab('products')">💊 Product Pipeline</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="newsTab" class="tab-content active">
+                <div class="tab-panel" id="newsContent"></div>
+            </div>
+            <div id="legislativeTab" class="tab-content">
+                <div class="tab-panel" id="legislativeContent"></div>
+            </div>
+            <div id="productsTab" class="tab-content">
+                <div class="tab-panel" id="productsContent"></div>
+            </div>
+
+            <!-- Tool Calls -->
+            <div class="tool-calls-section">
+                <h4>🔧 Tool Execution Log</h4>
+                <div id="toolCallsList"></div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+            </svg>
+            <h3>Start Your Intelligence Search</h3>
+            <p>Search for any pharmaceutical manufacturer or PBM to generate a comprehensive intelligence report</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:8001';
+        let searchTimeout;
+        let currentEntity = null;
+
+        // Elements
+        const searchInput = document.getElementById('searchInput');
+        const autocompleteResults = document.getElementById('autocompleteResults');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const loadingProgress = document.getElementById('loadingProgress');
+        const reportCard = document.getElementById('reportCard');
+        const emptyState = document.getElementById('emptyState');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Search Input Handler
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                autocompleteResults.classList.remove('show');
+                return;
+            }
+
+            searchTimeout = setTimeout(() => searchEntities(query), 300);
+        });
+
+        // Click outside to close autocomplete
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-section')) {
+                autocompleteResults.classList.remove('show');
+            }
+        });
+
+        // Search Entities
+        async function searchEntities(query) {
+            try {
+                const response = await fetch(`${API_BASE}/search-entities?q=${encodeURIComponent(query)}&limit=5`);
+                
+                if (!response.ok) {
+                    throw new Error('Search failed');
+                }
+
+                const data = await response.json();
+                displayAutocomplete(data.results);
+            } catch (error) {
+                console.error('Search error:', error);
+                showError('Failed to search entities. Please check if the server is running.');
+            }
+        }
+
+        // Display Autocomplete Results
+        function displayAutocomplete(results) {
+            if (!results || results.length === 0) {
+                autocompleteResults.innerHTML = '<div class="no-results">No entities found</div>';
+                autocompleteResults.classList.add('show');
+                return;
+            }
+
+            const html = results.map(entity => `
+                <div class="autocomplete-item" onclick="selectEntity('${entity.id}', '${entity.name}', '${entity.type}')">
+                    <div class="entity-name">${entity.name}</div>
+                    <div class="entity-meta">
+                        <span class="entity-badge ${entity.type}">${entity.type.toUpperCase()}</span>
+                        ${entity.ticker ? `Ticker: ${entity.ticker}` : ''}
+                        ${entity.headquarters ? ` • ${entity.headquarters}` : ''}
+                        <span style="color: #10b981; margin-left: 8px;">Match: ${entity.score}%</span>
+                    </div>
+                </div>
+            `).join('');
+
+            autocompleteResults.innerHTML = html;
+            autocompleteResults.classList.add('show');
+        }
+
+        // Select Entity
+        function selectEntity(id, name, type) {
+            currentEntity = { id, name, type };
+            searchInput.value = name;
+            autocompleteResults.classList.remove('show');
+            generateIntelligence(id, name, type);
+        }
+
+        // Generate Intelligence
+        async function generateIntelligence(entityId, entityName, entityType) {
+            // Hide all sections
+            emptyState.style.display = 'none';
+            reportCard.classList.remove('show');
+            errorMessage.classList.remove('show');
+            
+            // Show loading
+            loadingSpinner.classList.add('show');
+            
+            // Simulate progress updates
+            updateProgress('⏳ Initializing agents...');
+            setTimeout(() => updateProgress('📰 News Agent: Gathering market intelligence...'), 1000);
+            setTimeout(() => updateProgress('⚖️ Legislative Agent: Analyzing regulatory impacts...'), 2000);
+            setTimeout(() => updateProgress('💊 Product Agent: Reviewing FDA activity and pipeline...'), 3000);
+            setTimeout(() => updateProgress('🤖 Synthesizer Agent: Creating executive summary...'), 25000);
+
+            try {
+                const response = await fetch(`${API_BASE}/generate-intelligence`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        entity_id: entityId,
+                        entity_name: entityName,
+                        entity_type: entityType,
+                        date_range: '30 days'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Intelligence generation failed');
+                }
+
+                const data = await response.json();
+                displayReport(data);
+            } catch (error) {
+                console.error('Generation error:', error);
+                loadingSpinner.classList.remove('show');
+                emptyState.style.display = 'block';
+                showError('Failed to generate intelligence report. Please try again or check if the server is running on port 8001.');
+            }
+        }
+
+        // Update Loading Progress
+        function updateProgress(text) {
+            const progressItems = loadingProgress.querySelectorAll('.progress-item');
+            progressItems.forEach(item => {
+                item.classList.remove('active');
+                item.classList.add('completed');
+            });
+
+            const newItem = document.createElement('div');
+            newItem.className = 'progress-item active';
+            newItem.textContent = text;
+            loadingProgress.appendChild(newItem);
+        }
+
+        // Display Report
+        function displayReport(data) {
+            loadingSpinner.classList.remove('show');
+            reportCard.classList.add('show');
+
+            // Header
+            document.getElementById('reportEntityName').textContent = data.entity;
+            document.getElementById('reportMeta').textContent = `Generated on ${new Date().toLocaleString()} • 3 agents executed`;
+
+            // Executive Summary
+            const summarySection = document.getElementById('summarySection');
+            summarySection.innerHTML = `
+                <h3>📊 Executive Summary</h3>
+                <p>${formatText(data.summary)}</p>
+            `;
+
+            // Tab Contents
+            document.getElementById('newsContent').innerHTML = formatSection(data.sections.news);
+            document.getElementById('legislativeContent').innerHTML = formatSection(data.sections.legislative);
+            document.getElementById('productsContent').innerHTML = formatSection(data.sections.products);
+
+            // Tool Calls
+            const toolCallsList = document.getElementById('toolCallsList');
+            if (data.tool_calls && data.tool_calls.length > 0) {
+                toolCallsList.innerHTML = data.tool_calls.map(call => `
+                    <div class="tool-call">
+                        <span class="tool-call-agent">${call.agent}</span>
+                        <span>→</span>
+                        <span class="tool-call-tool">${call.tool}</span>
+                    </div>
+                `).join('');
+            } else {
+                toolCallsList.innerHTML = '<div class="tool-call">No tool calls recorded</div>';
+            }
+        }
+
+        // Format Section Text
+        function formatSection(text) {
+            if (!text) {
+                return '<p style="color: #6b7280;">No information available for this section.</p>';
+            }
+
+            // Split by double newlines for paragraphs
+            const paragraphs = text.split('\n\n');
+            
+            return paragraphs.map(p => {
+                p = p.trim();
+                
+                // Check if it's a header (starts with ##, ###, or is all caps and short)
+                if (p.startsWith('##')) {
+                    return `<h4>${p.replace(/^#+\s*/, '')}</h4>`;
+                }
+                
+                // Check for bullet points
+                if (p.startsWith('•') || p.startsWith('-') || p.startsWith('*')) {
+                    return `<p>${p}</p>`;
+                }
+                
+                return `<p>${p}</p>`;
+            }).join('');
+        }
+
+        // Format Text (preserve formatting)
+        function formatText(text) {
+            if (!text) return 'No summary available.';
+            return text.replace(/\n/g, '<br>');
+        }
+
+        // Switch Tab
+        function switchTab(tabName) {
+            // Remove active from all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active to selected tab
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Reset Search
+        function resetSearch() {
+            searchInput.value = '';
+            currentEntity = null;
+            reportCard.classList.remove('show');
+            emptyState.style.display = 'block';
+            errorMessage.classList.remove('show');
+            loadingProgress.innerHTML = '<div class="progress-item">⏳ Initializing agents...</div>';
+            searchInput.focus();
+        }
+
+        // Show Error
+        function showError(message) {
+            errorMessage.innerHTML = `<strong>Error</strong>${message}`;
+            errorMessage.classList.add('show');
+        }
+
+        // Initialize - focus on search input
+        searchInput.focus();
+    </script>
+</body>
+</html>
+
